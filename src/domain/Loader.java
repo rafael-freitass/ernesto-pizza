@@ -1,6 +1,6 @@
 package domain;
 
-public class LogoLoader {
+public class Loader {
 
     public static void LoadLogo(){
         System.out.println("\n" +
@@ -12,5 +12,13 @@ public class LogoLoader {
                 " |______||_|   |_| |_| \\___||___/ \\__|\\___/  |_|    |_|/___|/___|\\__,_|\n" +
                 "                                                                       \n" +
                 "                                                                       \n");
+    }
+
+    public static void LoadMenu(){
+        System.out.println("Realize seu pedido aqui:\n");
+        System.out.println("-------------- ###### --------------");
+        System.out.println("[1] Ver cardápio");
+        System.out.println("[2] Realizar Pedido");
+        System.out.println("-------------- ###### --------------");
     }
 }
