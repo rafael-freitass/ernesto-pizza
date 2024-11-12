@@ -1,7 +1,9 @@
 package domain;
 
-public class Loader {
+import java.util.Arrays;
+import java.util.Scanner;
 
+public class Loader {
     public static void clearScreen() {  
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
@@ -28,8 +30,13 @@ public class Loader {
         System.out.println("-------------- ###### --------------");
     }
 
-    public static void LoadPizza(){
-        Pizza p1 = new Pizza("Calabresa", "Calabresa", new String[] {"Mussarela"}, "M", 0)
+    public static Pizza[] LoadPizza(){
+        Pizza p1 = new Pizza("Calabresa", "Calabresa", new String[] {"Mussarela", "Calabresa", "Molho de tomate", "Cebola", "Orégano"}, 'P', 25);
+        Pizza p2 = new Pizza("Mussarela", "Mussarela", new String[] {"Mussarela", "Molho de tomate"}, 'P', 23);
+        Pizza p3 = new Pizza("Marguerita", "Marguerita", new String[] {"Mussarela", "Tomate", "Manjericão", "Molho de tomate"}, 'P', 20);
+        Pizza p4 = new Pizza("Frango com catupiry", "Frango com catupiry", new String[] {"Frango desfiado", "Catupiry", "Mussarela", "Molho de tomate"}, 'P', 25);
+
+        return new Pizza[]{p1, p2, p3, p4};
     }
 
     public static void LoadBebida(){
@@ -37,12 +44,29 @@ public class Loader {
     }
 
     public static void LoadCardapio(){
-       
+        clearScreen();
+        Pizza[] PizzaList = LoadPizza();
+        Scanner sc = new Scanner(System.in);
+        int voltar = 0;
+
+        while(voltar != 1) {
+            for (int i = 0; i < PizzaList.length; i++) {
+                System.out.println("Sabor: " + PizzaList[i].sabor + "\t\t" + "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes) + "\t");
+            }
+            System.out.println("[1] Voltar");
+            voltar = sc.nextInt();
+        }
+    }
+
+    public static double [] PriceHandler(double price){
+        return new double[]{0.0};
     }
 
     public static int MenuHandler(int opt){
         clearScreen();
-
+        if(opt == 1){
+            LoadCardapio();
+        }
         return 0;
     }
 }
