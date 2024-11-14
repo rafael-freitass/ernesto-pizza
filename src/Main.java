@@ -6,13 +6,14 @@ public class Main{
     public static void main(String[] args){
         @SuppressWarnings("resource")
         Scanner sc = new Scanner(System.in);
+        Loader loader = new Loader();
         int opt = 0;
         while(opt != 3){
-            Loader.LoadLogo();
+            loader.LoadLogo();
             System.out.println("\n");
-            Loader.LoadMenu();
+            loader.LoadMenu();
             opt = sc.nextInt();
-            Loader.MenuHandler(opt);
+            loader.MenuHandler(opt);
         }
     }
 }

@@ -1,15 +1,17 @@
 package domain;
 
+import enums.Tamanho;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Loader {
-    public static void clearScreen() {  
+    public void clearScreen() {
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
     }
 
-    public static void LoadLogo(){
+    public void LoadLogo(){
         System.out.println("\n" +
                 "  ______                          _           _____  _                 \n" +
                 " |  ____|                        | |         |  __ \\(_)                \n" +
@@ -21,7 +23,7 @@ public class Loader {
                 "                                                                       ");
     }
 
-    public static void LoadMenu(){
+    public void LoadMenu(){
         System.out.println("Realize seu pedido aqui:");
         System.out.println("-------------- ###### --------------");
         System.out.println("[1] Ver cardápio");
@@ -30,16 +32,17 @@ public class Loader {
         System.out.println("-------------- ###### --------------");
     }
 
-    public static Pizza[] LoadPizza(){
-        Pizza p1 = new Pizza("Calabresa", "Calabresa", new String[] {"Mussarela", "Calabresa", "Molho de tomate", "Cebola", "Orégano"}, 'P', 25);
-        Pizza p2 = new Pizza("Mussarela", "Mussarela", new String[] {"Mussarela", "Molho de tomate"}, 'P', 23);
-        Pizza p3 = new Pizza("Marguerita", "Marguerita", new String[] {"Mussarela", "Tomate", "Manjericão", "Molho de tomate"}, 'P', 20);
-        Pizza p4 = new Pizza("Frango com catupiry", "Frango com catupiry", new String[] {"Frango desfiado", "Catupiry", "Mussarela", "Molho de tomate"}, 'P', 25);
+    public Pizza[] LoadPizza(){
+        Pizza p1 = new Pizza("Calabresa", new String[] {"Mussarela", "Calabresa", "Molho de tomate", "Cebola", "Orégano"}, 25);
+        Pizza p2 = new Pizza("Mussarela", new String[] {"Mussarela", "Molho de tomate"}, 23);
+        Pizza p3 = new Pizza("Marguerita", new String[] {"Mussarela", "Tomate", "Manjericão", "Molho de tomate"}, 20);
+        Pizza p4 = new Pizza("Frango com catupiry", new String[] {"Frango desfiado", "Catupiry", "Mussarela", "Molho de tomate"}, 25);
 
         return new Pizza[]{p1, p2, p3, p4};
     }
 
-    public static Bebida[] LoadBebida(){
+    // Instancia as bebidas
+    public Bebida[] LoadBebida(){
         Bebida b1 = new Bebida("Coca-Cola", "Refrigerante", 10);
         Bebida b2 = new Bebida("Prats", "Suco", 9);
         Bebida b3 = new Bebida("Chopp Brahma", "Cerveja", 5);
@@ -47,7 +50,8 @@ public class Loader {
         return new Bebida[]{b1, b2, b3};
     }
 
-    public static void LoadCardapio(){
+    // Mostra o cardapio
+    public void LoadCardapio(){
         clearScreen();
         Pizza[] PizzaList = LoadPizza();
         Bebida[] BebidaList = LoadBebida();
@@ -57,7 +61,9 @@ public class Loader {
         while(voltar != 1) {
             System.out.println("---------- Pizzas ----------");
             for (int i = 0; i < PizzaList.length; i++) {
-                System.out.println("Sabor: " + PizzaList[i].sabor + "\t" + "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes) + "\t" + "Preco: R$" + PizzaList[i].precoBase);
+                System.out.println("Sabor: " + PizzaList[i].sabor + "\t" +
+                        "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes) + "\t" +
+                        "Preco: R$" + PizzaList[i].calcularPreco(Tamanho.M));
             }
 
             System.out.println("\nBebidas");
@@ -70,11 +76,11 @@ public class Loader {
         }
     }
 
-    public static double [] PriceHandler(double price){
+    public double [] PriceHandler(double price){
         return new double[]{0.0};
     }
 
-    public static int MenuHandler(int opt){
+    public int MenuHandler(int opt){
         clearScreen();
         if(opt == 1){
             LoadCardapio();

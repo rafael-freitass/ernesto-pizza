@@ -1,28 +1,25 @@
 package domain;
 
+import enums.Tamanho;
+
+import javax.swing.text.TabableView;
 import java.util.List;
 
 public class Pizza {
     public String nome;
     public String sabor;
     public String [] ingredientes;
-    public char tamanho;
+    public Tamanho tamanho;
     public double precoBase;
 
-    public Pizza(String nome, String sabor, String [] ingredientes, char tamanho, double precoBase){
-        this.nome = nome;
+    public Pizza(String sabor, String [] ingredientes, double precoBase){
         this.sabor = sabor;
         this.ingredientes = ingredientes;
-        this.tamanho = tamanho;
         this.precoBase = precoBase;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public double calcularPreco(Tamanho tamanho){
+        return precoBase * tamanho.getFator();
     }
 
     public String getSabor() {
@@ -39,14 +36,6 @@ public class Pizza {
 
     public void setIngredientes(String [] ingredientes) {
         this.ingredientes = ingredientes;
-    }
-
-    public char getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(char tamanho) {
-        this.tamanho = tamanho;
     }
 
     public double getPrecoBase() {
