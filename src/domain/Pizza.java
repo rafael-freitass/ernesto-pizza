@@ -3,6 +3,7 @@ package domain;
 import java.util.List;
 
 public class Pizza {
+    +
     public String nome;
     public String sabor;
     public List<String> ingredientes;
