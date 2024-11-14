@@ -5,6 +5,12 @@ public class Bebida {
     public String tipo;
     public double preco;
 
+    public Bebida(String nome, String tipo, double preco) {
+        this.nome = nome;
+        this.tipo = tipo;
+        this.preco = preco;
+    }
+
     public String getNome() {
         return nome;
     }

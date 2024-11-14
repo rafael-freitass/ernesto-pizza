@@ -3,12 +3,19 @@ package domain;
 import java.util.List;
 
 public class Pizza {
-    +
     public String nome;
     public String sabor;
-    public List<String> ingredientes;
+    public String [] ingredientes;
     public char tamanho;
     public double precoBase;
+
+    public Pizza(String nome, String sabor, String [] ingredientes, char tamanho, double precoBase){
+        this.nome = nome;
+        this.sabor = sabor;
+        this.ingredientes = ingredientes;
+        this.tamanho = tamanho;
+        this.precoBase = precoBase;
+    }
 
     public String getNome() {
         return nome;
@@ -26,11 +33,11 @@ public class Pizza {
         this.sabor = sabor;
     }
 
-    public List<String> getIngredientes() {
+    public String [] getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(List<String> ingredientes) {
+    public void setIngredientes(String [] ingredientes) {
         this.ingredientes = ingredientes;
     }
 
