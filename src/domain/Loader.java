@@ -57,18 +57,22 @@ public class Loader {
         Bebida[] BebidaList = LoadBebida();
         Scanner sc = new Scanner(System.in);
         int voltar = 0;
+        char[] tamanhos = {'P', 'M', 'G'};
+        Tamanho medium = Tamanho.M;
+        Tamanho large = Tamanho.G;
 
         while(voltar != 1) {
             System.out.println("---------- Pizzas ----------");
             for (int i = 0; i < PizzaList.length; i++) {
-                System.out.println("Sabor: " + PizzaList[i].sabor + "\t" +
-                        "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes) + "\t" +
-                        "Preco: R$" + PizzaList[i].calcularPreco(Tamanho.M));
+                System.out.println("\n---------****--------");
+                System.out.println("Sabor: " + PizzaList[i].sabor + "\n" + "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes) + "\t");
+                System.out.print("P: R$" + PizzaList[i].calcularPreco(Tamanho.P) + " " + "M: R$" + PizzaList[i].calcularPreco(Tamanho.M) + " " + "G: R$" + PizzaList[i].calcularPreco(Tamanho.G) + "\n");
+                System.out.println("---------------------\n");
             }
 
-            System.out.println("\nBebidas");
+            System.out.println("\n-------- Bebidas --------");
             for (int i = 0; i < BebidaList.length; i++) {
-                System.out.println(BebidaList[i].nome + " " + BebidaList[i].preco + "R$");
+                System.out.println(BebidaList[i].nome + "\tPreço: " + BebidaList[i].preco);
             }
 
             System.out.println("[1] Voltar");
