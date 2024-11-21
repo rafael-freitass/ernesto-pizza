@@ -80,8 +80,59 @@ public class Loader {
         }
     }
 
-    public double [] PriceHandler(double price){
-        return new double[]{0.0};
+    public void FazerPedido(){
+        Pizza[] PizzaList = LoadPizza();
+        Bebida[] BebidaList = LoadBebida();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Selecione uma pizza:");
+        for (int i = 0; i < PizzaList.length; i++) {
+            System.out.println("[" + (i + 1) + "] " + PizzaList[i].sabor);
+        }
+        int escolhaPizza = sc.nextInt();
+        if (escolhaPizza < 1 || escolhaPizza > PizzaList.length) {
+            System.out.println("Escolha inválida!");
+            return;
+        }
+
+        System.out.println("Selecione o tamanho: [P] Pequeno, [M] Médio, [G] Grande");
+
+        char tamanho = sc.next().toUpperCase().charAt(0);
+        Tamanho tamanhoSelecionado;
+        if (tamanho == 'P') {
+            tamanhoSelecionado = Tamanho.P;
+        } else if (tamanho == 'M') {
+            tamanhoSelecionado = Tamanho.M;
+        } else if (tamanho == 'G') {
+            tamanhoSelecionado = Tamanho.G;
+        } else {
+            System.out.println("Tamanho inválido!");
+            return;
+        }
+
+        System.out.println("Selecione uma Bebida");
+        for (int i=0; i < BebidaList.length; i++){
+            System.out.println("[" + (i + 1) + "]" + BebidaList[i].nome);
+        }
+        int escolhaBebida = sc.nextInt();
+        if (escolhaBebida < 1 || escolhaBebida > BebidaList.length) {
+            System.out.println("Escolha inválida!");
+            return;
+        }
+
+        Pizza pizzaEscolhida = PizzaList[escolhaPizza - 1];
+        double preco = pizzaEscolhida.calcularPreco(tamanhoSelecionado);
+        Bebida bebidaEscolhida = BebidaList[escolhaBebida - 1];
+
+        double precoTotal = preco + bebidaEscolhida.preco;
+
+        System.out.println("----Pedido----");
+        System.out.println(pizzaEscolhida.sabor + " - Tamanho " + tamanhoSelecionado + " - Preço: R$" + preco);
+        System.out.println(bebidaEscolhida.nome + "- Preço: R$" + bebidaEscolhida.preco);
+        System.out.println("Total: R$" + precoTotal);
+
+        // Essa lógica só deixa pedir 1 pizza e 1 bebida, talves fazer um loop while e uma opção de finalizar
     }
 
     public int MenuHandler(int opt){
@@ -90,7 +141,7 @@ public class Loader {
             LoadCardapio();
         }
         else if(opt == 2){
-            // realizar pedido
+            FazerPedido();
         }
         return 0;
     }
