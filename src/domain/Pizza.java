@@ -2,9 +2,6 @@ package domain;
 
 import enums.Tamanho;
 
-import javax.swing.text.TabableView;
-import java.util.List;
-
 public class Pizza {
     public String nome;
     public String sabor;

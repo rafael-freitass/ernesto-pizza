@@ -32,6 +32,7 @@ public class Loader {
         System.out.println("-------------- ###### --------------");
     }
 
+    // Instancia as pizzas
     public Pizza[] LoadPizza(){
         Pizza p1 = new Pizza("Calabresa", new String[] {"Mussarela", "Calabresa", "Molho de tomate", "Cebola", "Orégano"}, 25);
         Pizza p2 = new Pizza("Mussarela", new String[] {"Mussarela", "Molho de tomate"}, 23);
@@ -50,30 +51,37 @@ public class Loader {
         return new Bebida[]{b1, b2, b3};
     }
 
+    private void exibirPizzas(Pizza[] PizzaList){
+        System.out.println("---------- Pizzas ----------");
+        for (int i = 0; i < PizzaList.length; i++) {
+            System.out.println("\n---------****--------");
+            System.out.println("Sabor: " + PizzaList[i].sabor + "\n" +
+                    "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes));
+            System.out.print("P: R$" + PizzaList[i].calcularPreco(Tamanho.P) + " " +
+                    "M: R$" + PizzaList[i].calcularPreco(Tamanho.M) + " " +
+                    "G: R$" + PizzaList[i].calcularPreco(Tamanho.G));
+            System.out.println("---------------------\n");
+        }
+    }
+
+    private void exibirBebidas(Bebida[] BebidaList){
+        System.out.println("\n-------- Bebidas --------");
+        for (int i = 0; i < BebidaList.length; i++) {
+            System.out.println(BebidaList[i].nome + "\tPreço: " + BebidaList[i].preco);
+        }
+    }
+
     // Mostra o cardapio
     public void LoadCardapio(){
         clearScreen();
         Pizza[] PizzaList = LoadPizza();
         Bebida[] BebidaList = LoadBebida();
         Scanner sc = new Scanner(System.in);
+
         int voltar = 0;
-        char[] tamanhos = {'P', 'M', 'G'};
-        Tamanho medium = Tamanho.M;
-        Tamanho large = Tamanho.G;
-
         while(voltar != 1) {
-            System.out.println("---------- Pizzas ----------");
-            for (int i = 0; i < PizzaList.length; i++) {
-                System.out.println("\n---------****--------");
-                System.out.println("Sabor: " + PizzaList[i].sabor + "\n" + "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes) + "\t");
-                System.out.print("P: R$" + PizzaList[i].calcularPreco(Tamanho.P) + " " + "M: R$" + PizzaList[i].calcularPreco(Tamanho.M) + " " + "G: R$" + PizzaList[i].calcularPreco(Tamanho.G) + "\n");
-                System.out.println("---------------------\n");
-            }
-
-            System.out.println("\n-------- Bebidas --------");
-            for (int i = 0; i < BebidaList.length; i++) {
-                System.out.println(BebidaList[i].nome + "\tPreço: " + BebidaList[i].preco);
-            }
+            exibirPizzas(PizzaList);
+            exibirBebidas(BebidaList);
 
             System.out.println("[1] Voltar");
             voltar = sc.nextInt();
@@ -81,11 +89,13 @@ public class Loader {
     }
 
     public void FazerPedido(){
+        clearScreen();
         Pizza[] PizzaList = LoadPizza();
         Bebida[] BebidaList = LoadBebida();
 
         Scanner sc = new Scanner(System.in);
 
+        // Escolhe a pizza
         System.out.println("Selecione uma pizza:");
         for (int i = 0; i < PizzaList.length; i++) {
             System.out.println("[" + (i + 1) + "] " + PizzaList[i].sabor);
@@ -96,8 +106,8 @@ public class Loader {
             return;
         }
 
+        // Escolhe o tamanho da pizza
         System.out.println("Selecione o tamanho: [P] Pequeno, [M] Médio, [G] Grande");
-
         char tamanho = sc.next().toUpperCase().charAt(0);
         Tamanho tamanhoSelecionado;
         if (tamanho == 'P') {
@@ -111,6 +121,7 @@ public class Loader {
             return;
         }
 
+        // Escolher a bebida
         System.out.println("Selecione uma Bebida");
         for (int i=0; i < BebidaList.length; i++){
             System.out.println("[" + (i + 1) + "]" + BebidaList[i].nome);
@@ -121,12 +132,17 @@ public class Loader {
             return;
         }
 
+        // Guarda qual pizza foi escolhida e calcula o seu preço
         Pizza pizzaEscolhida = PizzaList[escolhaPizza - 1];
         double preco = pizzaEscolhida.calcularPreco(tamanhoSelecionado);
+
+        // Guarda qual foi a bebida escolhida
         Bebida bebidaEscolhida = BebidaList[escolhaBebida - 1];
 
+        // Calcula o preço total
         double precoTotal = preco + bebidaEscolhida.preco;
 
+        // Mostra a "nota fiscal" do pedido
         System.out.println("----Pedido----");
         System.out.println(pizzaEscolhida.sabor + " - Tamanho " + tamanhoSelecionado + " - Preço: R$" + preco);
         System.out.println(bebidaEscolhida.nome + "- Preço: R$" + bebidaEscolhida.preco);
