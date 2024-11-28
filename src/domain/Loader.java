@@ -2,10 +2,14 @@ package domain;
 
 import enums.Tamanho;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Loader {
+    private  ArrayList<Pizza> pizzasList = new ArrayList<>();
+    private  ArrayList<Bebida> bebidasList = new ArrayList<>();
+
     public void clearScreen() {
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
@@ -57,10 +61,10 @@ public class Loader {
             System.out.println("\n---------****--------");
             System.out.println("Sabor: " + PizzaList[i].sabor + "\n" +
                     "Ingredientes: " + Arrays.toString(PizzaList[i].ingredientes));
-            System.out.print("P: R$" + PizzaList[i].calcularPreco(Tamanho.P) + " " +
-                    "M: R$" + PizzaList[i].calcularPreco(Tamanho.M) + " " +
-                    "G: R$" + PizzaList[i].calcularPreco(Tamanho.G));
-            System.out.println("---------------------\n");
+            System.out.print("P: R$" + String.format("%.2f", PizzaList[i].calcularPreco(Tamanho.P)) + " " +
+                    "M: R$" + String.format("%.2f", PizzaList[i].calcularPreco(Tamanho.M)) + " " +
+                    "G: R$" + String.format("%.2f",PizzaList[i].calcularPreco(Tamanho.G)));
+            System.out.println("\n---------------------");
         }
     }
 
@@ -90,24 +94,59 @@ public class Loader {
 
     public void FazerPedido(){
         clearScreen();
-        Pizza[] PizzaList = LoadPizza();
-        Bebida[] BebidaList = LoadBebida();
+        Pizza[] pizzas = LoadPizza();
+        Bebida[] bebidas = LoadBebida();
 
         Scanner sc = new Scanner(System.in);
+        boolean finalizar = false;
+        double total = 0;
 
-        // Escolhe a pizza
-        System.out.println("Selecione uma pizza:");
-        for (int i = 0; i < PizzaList.length; i++) {
-            System.out.println("[" + (i + 1) + "] " + PizzaList[i].sabor);
+        while(!finalizar){
+            // Escolhe o que vai fazer
+            System.out.println("[1] Adicionar pizza ao pedido");
+            System.out.println("[2] Adicionar bebida ao pedido");
+            System.out.println("[3] Finalizar pedido");
+            System.out.println("[4] Cancelar pedido");
+
+            int opcao = sc.nextInt();
+
+            if (opcao == 1){
+                total += selecionarPizza(pizzas, sc);
+            }
+            else if (opcao == 2){
+                total += selecionarBebida(bebidas, sc);
+            }
+            else if (opcao == 3){
+                mostrarNota();
+                finalizar = true;
+            }
+            else if (opcao == 4){
+                System.out.println("Pedido cancelado.");
+                finalizar = true;
+            }
+            else{
+                System.out.println("Opção inválida!");
+            }
         }
+    }
+
+    private double selecionarPizza(Pizza[] pizzas, Scanner sc){
+        System.out.println("Selecione uma pizza");
+        for (int i = 0; i < pizzas.length; i++) {
+            System.out.println("[" + (i + 1) + "] " + pizzas[i].sabor); // loop para printar as opções
+        }
+
+        // Escolhe as pizzas
         int escolhaPizza = sc.nextInt();
-        if (escolhaPizza < 1 || escolhaPizza > PizzaList.length) {
+        if (escolhaPizza < 1 || escolhaPizza > pizzas.length) {
             System.out.println("Escolha inválida!");
-            return;
+            return 0;
         }
 
-        // Escolhe o tamanho da pizza
+        // Escolhe o tamanho das pizzas
         System.out.println("Selecione o tamanho: [P] Pequeno, [M] Médio, [G] Grande");
+
+        // O TAMANHO TA AQUI MAS TEM QUE TA NA PIZZAAAA
         char tamanho = sc.next().toUpperCase().charAt(0);
         Tamanho tamanhoSelecionado;
         if (tamanho == 'P') {
@@ -118,37 +157,42 @@ public class Loader {
             tamanhoSelecionado = Tamanho.G;
         } else {
             System.out.println("Tamanho inválido!");
-            return;
+            return 0;
         }
 
-        // Escolher a bebida
-        System.out.println("Selecione uma Bebida");
-        for (int i=0; i < BebidaList.length; i++){
-            System.out.println("[" + (i + 1) + "]" + BebidaList[i].nome);
+        Pizza pizzaEscolhida = pizzas[escolhaPizza - 1];
+        double precoPizza = pizzaEscolhida.calcularPreco(tamanhoSelecionado);
+        pizzasList.add(pizzaEscolhida);
+
+        System.out.println("Adicionado: " + pizzaEscolhida.sabor + " - Tamanho " + tamanhoSelecionado + " - R$" + String.format("%.2f",precoPizza));
+        return precoPizza;
+    }
+
+    private double selecionarBebida(Bebida[] bebidas, Scanner sc){
+        System.out.println("Selecione uma bebida");
+        for (int i = 0; i < bebidas.length; i++) {
+            System.out.println("[" + (i + 1) + "] " + bebidas[i].nome);
         }
         int escolhaBebida = sc.nextInt();
-        if (escolhaBebida < 1 || escolhaBebida > BebidaList.length) {
-            System.out.println("Escolha inválida!");
-            return;
+        if(escolhaBebida < 1 || escolhaBebida > bebidas.length) {
+            System.out.println("Escolha invalida");
+            return 0;
         }
+        Bebida bebidaEscolhida = bebidas[escolhaBebida - 1];
+        System.out.println("Adicionado: " + bebidaEscolhida.nome + " - R$" + bebidaEscolhida.preco);
+        return bebidaEscolhida.preco;
+    }
 
-        // Guarda qual pizza foi escolhida e calcula o seu preço
-        Pizza pizzaEscolhida = PizzaList[escolhaPizza - 1];
-        double preco = pizzaEscolhida.calcularPreco(tamanhoSelecionado);
-
-        // Guarda qual foi a bebida escolhida
-        Bebida bebidaEscolhida = BebidaList[escolhaBebida - 1];
-
-        // Calcula o preço total
-        double precoTotal = preco + bebidaEscolhida.preco;
-
-        // Mostra a "nota fiscal" do pedido
-        System.out.println("----Pedido----");
-        System.out.println(pizzaEscolhida.sabor + " - Tamanho " + tamanhoSelecionado + " - Preço: R$" + preco);
-        System.out.println(bebidaEscolhida.nome + "- Preço: R$" + bebidaEscolhida.preco);
-        System.out.println("Total: R$" + precoTotal);
-
-        // Essa lógica só deixa pedir 1 pizza e 1 bebida, talves fazer um loop while e uma opção de finalizar
+    private void mostrarNota(){
+        System.out.println("------ Pedido ------ ");
+        System.out.println("*** Pizzas ***");
+        for (int i = 0; i < pizzasList.size(); i++) {
+            System.out.println(" - " + pizzasList.get(i).sabor + " - Tamanho " + pizzasList.get(i).tamanho + " - R$" );
+        }
+        System.out.println("*** Bebidas ***");
+        for (int i = 0; i < bebidasList.size(); i++) {
+            System.out.println(" - " + bebidasList.get(i).nome + " - R$" );
+        }
     }
 
     public int MenuHandler(int opt){

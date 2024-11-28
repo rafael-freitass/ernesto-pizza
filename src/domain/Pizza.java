@@ -3,16 +3,16 @@ package domain;
 import enums.Tamanho;
 
 public class Pizza {
-    public String nome;
     public String sabor;
     public String [] ingredientes;
-    public Tamanho tamanho;
+    public Tamanho tamanho; // AQUI
     public double precoBase;
 
     public Pizza(String sabor, String [] ingredientes, double precoBase){
         this.sabor = sabor;
         this.ingredientes = ingredientes;
         this.precoBase = precoBase;
+        // TAMANHO
     }
 
     public double calcularPreco(Tamanho tamanho){
