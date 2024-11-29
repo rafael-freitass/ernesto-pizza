@@ -1,11 +1,12 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
     private Cliente cliente;
-    public List<Pizza> listaPizzas;
-    public List<Bebida> listaBebidas;
+    public ArrayList<Pizza> listaPizzas;
+    public ArrayList<Bebida> listaBebidas;
     public double precoTotal;
     public String status;
 
@@ -17,19 +18,19 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-    public List<Pizza> getListaPizzas() {
+    public ArrayList<Pizza> getListaPizzas() {
         return listaPizzas;
     }
 
-    public void setListaPizzas(List<Pizza> listaPizzas) {
+    public void setListaPizzas(ArrayList<Pizza> listaPizzas) {
         this.listaPizzas = listaPizzas;
     }
 
-    public List<Bebida> getListaBebidas() {
+    public ArrayList<Bebida> getListaBebidas() {
         return listaBebidas;
     }
 
-    public void setListaBebidas(List<Bebida> listaBebidas) {
+    public void setListaBebidas(ArrayList<Bebida> listaBebidas) {
         this.listaBebidas = listaBebidas;
     }
 

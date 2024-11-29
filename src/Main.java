@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
+import domain.Funcionario;
 import domain.Loader;
+import domain.Cliente;
 
 public class Main{
     public static void main(String[] args){
@@ -11,7 +13,8 @@ public class Main{
         while(opt != 3){
             loader.LoadLogo();
             System.out.println("\n");
-            loader.LoadMenu();
+            Funcionario funcionario = loader.LoadFuncionario();
+            loader.LoadMenu(funcionario);
             opt = sc.nextInt();
             loader.MenuHandler(opt);
         }

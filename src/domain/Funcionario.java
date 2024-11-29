@@ -1,11 +1,11 @@
 package domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Funcionario extends Pessoa{
     private String cargo;
 
-    public Funcionario(String nome, String cpf, Date dataNascimento, String cargo){
+    public Funcionario(String nome, String cpf, LocalDate dataNascimento, String cargo){
         super(dataNascimento, nome, cpf);
         this.cargo = cargo;
     }

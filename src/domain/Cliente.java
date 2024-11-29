@@ -1,6 +1,6 @@
 package domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Cliente extends Pessoa {
     private String telefone;
@@ -22,11 +22,14 @@ public class Cliente extends Pessoa {
         this.endereco = endereco;
     }
 
-    public Cliente(String nome, String cpf, Date dataNascimento, String telefone, String endereco) {
+    public Cliente(String nome, String cpf, LocalDate dataNascimento, String telefone, String endereco) {
         super(dataNascimento, nome, cpf);
         this.telefone = telefone;
         this.endereco = endereco;
-
-
+    }
+    public Cliente(String nome, LocalDate dataNascimento, String telefone, String endereco) {
+        super(dataNascimento, nome);
+        this.telefone = telefone;
+        this.endereco = endereco;
     }
 }

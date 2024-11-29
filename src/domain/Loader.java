@@ -2,6 +2,7 @@ package domain;
 
 import enums.Tamanho;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -9,6 +10,9 @@ import java.util.Scanner;
 public class Loader {
     private  ArrayList<Pizza> pizzasList = new ArrayList<>();
     private  ArrayList<Bebida> bebidasList = new ArrayList<>();
+    private Funcionario funcionario;
+    private Cliente cliente;
+    private Pedido pedido = new Pedido();
 
     public void clearScreen() {
         System.out.print("\033[H\033[2J");  
@@ -27,13 +31,45 @@ public class Loader {
                 "                                                                       ");
     }
 
-    public void LoadMenu(){
-        System.out.println("Realize seu pedido aqui:");
+    public Funcionario LoadFuncionario(){
+        return new Funcionario("Rafão", "12345678910", LocalDate.parse("2003-01-31"), "Pizzaiolo");
+    }
+
+    public Cliente CadastrarCliente(){
+        Scanner sc = new Scanner(System.in);
+        Pessoa p1 = CadastrarUsuario();
+        System.out.println("Insira seu telefone:");
+        String telefone = sc.nextLine();
+        System.out.println("Insira seu endereco:");
+        String endereco = sc.nextLine();
+
+        return new Cliente(p1.getNome(), p1.getDataNascimento(), telefone, endereco);
+    }
+
+    public Pessoa CadastrarUsuario(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Bem vindo!\t Realize seu cadastro para realizar seu pedido!\n");
+        System.out.println("Insira seu nome: \t");
+        String name = sc.nextLine();
+        System.out.println("Insira sua data de nascimento no formato yyyy-MM-dd: \t");
+        String birthday = sc.nextLine();
+        LocalDate birthdate = LocalDate.parse(birthday);
+
+        return new Pessoa(birthdate, name);
+    }
+
+    public void LoadMenu(Funcionario funcionario){
+        if(this.cliente == null){
+            Cliente usuario = this.CadastrarCliente();
+            this.cliente = usuario;
+        }
+        System.out.println(this.cliente.getNome() + ", realize seu pedido aqui:");
         System.out.println("-------------- ###### --------------");
         System.out.println("[1] Ver cardápio");
         System.out.println("[2] Realizar Pedido");
         System.out.println("[3] Sair");
         System.out.println("-------------- ###### --------------");
+        this.funcionario = funcionario;
     }
 
     // Instancia as pizzas
@@ -117,7 +153,9 @@ public class Loader {
                 total += selecionarBebida(bebidas, sc);
             }
             else if (opcao == 3){
-                mostrarNota();
+                this.pedido.precoTotal = total;
+                this.pedido.status = "Preparando";
+                mostrarNota(this.pedido);
                 finalizar = true;
             }
             else if (opcao == 4){
@@ -160,9 +198,12 @@ public class Loader {
             return 0;
         }
 
+        pizzas[escolhaPizza - 1].tamanho = tamanhoSelecionado;
         Pizza pizzaEscolhida = pizzas[escolhaPizza - 1];
         double precoPizza = pizzaEscolhida.calcularPreco(tamanhoSelecionado);
+        pizzas[escolhaPizza - 1].precoBase = precoPizza;
         pizzasList.add(pizzaEscolhida);
+        this.pedido.listaPizzas = pizzasList;
 
         System.out.println("Adicionado: " + pizzaEscolhida.sabor + " - Tamanho " + tamanhoSelecionado + " - R$" + String.format("%.2f",precoPizza));
         return precoPizza;
@@ -179,20 +220,32 @@ public class Loader {
             return 0;
         }
         Bebida bebidaEscolhida = bebidas[escolhaBebida - 1];
+        bebidasList.add(bebidaEscolhida);
+        this.pedido.listaBebidas = bebidasList;
         System.out.println("Adicionado: " + bebidaEscolhida.nome + " - R$" + bebidaEscolhida.preco);
         return bebidaEscolhida.preco;
     }
 
-    private void mostrarNota(){
+    private void mostrarNota(Pedido pedido){
+        System.out.println("Obrigado por comprar com a Ernesto Pizzas! Seu pedido foi recebido com sucesso!");
+        System.out.println("O funcionário " + this.funcionario.getNome() + " está preparando tudo com muito carinho :)\n");
+        System.out.println("Confira seu pedido abaixo\n\n");
         System.out.println("------ Pedido ------ ");
         System.out.println("*** Pizzas ***");
-        for (int i = 0; i < pizzasList.size(); i++) {
-            System.out.println(" - " + pizzasList.get(i).sabor + " - Tamanho " + pizzasList.get(i).tamanho + " - R$" );
+        for (int i = 0; i < pedido.listaPizzas.size(); i++) {
+            System.out.println(" - " + pedido.listaPizzas.get(i).sabor + " - Tamanho " + pedido.listaPizzas.get(i).tamanho + " - R$" + String.format("%.2f", pedido.listaPizzas.get(i).precoBase));
         }
         System.out.println("*** Bebidas ***");
-        for (int i = 0; i < bebidasList.size(); i++) {
-            System.out.println(" - " + bebidasList.get(i).nome + " - R$" );
+        for (int i = 0; i < pedido.listaBebidas.size(); i++) {
+            System.out.println(" - " + pedido.listaBebidas.get(i).nome + " - R$" + pedido.listaBebidas.get(i).preco );
         }
+        System.out.println(" Total - " + "R$" + pedido.precoTotal);
+        this.limparPedido(pedido.listaPizzas, pedido.listaBebidas);
+    }
+
+    private void limparPedido(ArrayList<Pizza> pizzaList, ArrayList<Bebida> bebidasList){
+        pizzaList.removeAll(pizzaList);
+        bebidasList.removeAll(bebidasList);
     }
 
     public int MenuHandler(int opt){
